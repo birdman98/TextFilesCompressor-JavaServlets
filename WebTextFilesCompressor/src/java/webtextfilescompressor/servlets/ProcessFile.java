@@ -47,14 +47,14 @@ public class ProcessFile extends HttpServlet {
                 try {
                      if(compressor.compressFile()) {
                          out.println("<html>\n<body>\n<div>File <b>" + this.inputFileName + "</b> was successfuly compressed into file <b>"
-                                 + this.outputFileName + "</b>.</div>\n");
+                                 + this.outputFileName + "</b>.</div>\n</body>\n</html>");
                      }               
                 } catch(WrongFilePassedException e) {
                        out.println("<html>\n<body>\n<div>File to compress not found: <b>"
-                              + e.getMessage() + "</b>.</div>\n");                  
+                              + e.getMessage() + "</b>.</div>\n</body>\n</html>");                  
                 } catch(IOException e) {
                       out.println("<html>\n<body>\n<div>Problem occured while compressing file: <b>"
-                              + e.getMessage() + "</b>.</div>\n");    
+                              + e.getMessage() + "</b>.</div>\n</body>\n</html>");    
                 }               
             } else if(this.mode.equals(Mode.DECOMPRESS.toString().toLowerCase())) {
                 WebFilesCompressor decompressor = SingleInstanceOfWebModelGuard.getFilesCompressor("", this.inputFileName, this.outputFileName);
@@ -62,7 +62,7 @@ public class ProcessFile extends HttpServlet {
                 try {
                      if(decompressor.decompressFile()) {
                          out.println("<html>\n<body>\n<div>File <b>" + this.inputFileName + "</b> was successfuly decompressed into file <b>"
-                                 + this.outputFileName + "</b>.</div>\n");
+                                 + this.outputFileName + "</b>.</div>\n</body>\n</html>");
                      }               
                 } catch(WrongFilePassedException e) {
                        out.println("<html>\n<body>\n<div>File to decompress not found: <b>"
