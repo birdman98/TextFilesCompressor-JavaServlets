@@ -93,6 +93,7 @@ public class ProcessFile extends HttpServlet {
         }
         
         Cookie cookie = new Cookie("prevMode", this.mode.toLowerCase());
+        cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
     }
     
