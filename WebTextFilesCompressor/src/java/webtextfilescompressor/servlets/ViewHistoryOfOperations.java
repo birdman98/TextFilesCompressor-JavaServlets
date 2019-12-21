@@ -1,20 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webtextfilescompressor.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import webtextfilescompressor.webmodel.SingleInstanceOfWebModelGuard;
+import webtextfilescompressor.webmodel.WebFilesCompressor;
 
 /**
  *
- * @author Birdman
+ * @author Piotr Matras
+ * @version 1.0
  */
 public class ViewHistoryOfOperations extends HttpServlet {
 
@@ -30,21 +29,35 @@ public class ViewHistoryOfOperations extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ViewHistoryOfOperations</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ViewHistoryOfOperations at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        PrintWriter out = response.getWriter();
+        
+        WebFilesCompressor compressor = SingleInstanceOfWebModelGuard.getFilesCompressor("", "", "");
+        
+        List<List<String>> historyOfOperations = compressor.getHistoryOfOperations();
+        
+        out.println("<hmtl>\n<body>\n");
+        
+        int i = 1;
+        int index = 0;
+        
+        out.println("<h3> History of operations:</h3>");
+        if(historyOfOperations.size() == 0) {
+            out.println("<br><br><b> No data of previous operations!</b>");
         }
+                
+        for(List<String> history : historyOfOperations) {
+            out.println("<div><b>" + i + ":</b></div>");
+            out.println("<div><b> mode:</b> " + history.get(index) + "</div>");
+            out.println("<div><b> input file:</b> " + history.get(++index) + "</div>");
+            out.println("<div><b> output file:</b> " + history.get(++index) + "</div>");
+            out.println("<br><br>");
+            
+            ++i;
+            index = 0;
+        }
+        out.println("</body>\n</html>");
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -80,7 +93,7 @@ public class ViewHistoryOfOperations extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        return "History of operations from WebFilesCompressor";
+    }
 
 }
