@@ -12,7 +12,7 @@ import java.util.zip.InflaterInputStream;
 /**
  *
  * @author Piotr Matras
- * @version 1.0.1
+ * @version 1.1.0
  */
 public class WebFilesCompressor implements CompressorInterface {
     /**
@@ -27,6 +27,10 @@ public class WebFilesCompressor implements CompressorInterface {
      * outputFileName - a file when will be saved compressed or decompressed data
      */
     private String outputFileName;
+    /**
+     * historyOfOperations - a collection of data which stores history of operations
+     */
+    private List<List<String>> historyOfOperations;
     
     /**
      * 
@@ -39,6 +43,7 @@ public class WebFilesCompressor implements CompressorInterface {
         this.fileToCompressName = fileToCompressName;
         this.fileToDecompressName = fileToDecompressName;
         this.outputFileName = outputFileName;
+        this.historyOfOperations = new ArrayList<List<String>>();
     }
     
     /**
@@ -85,6 +90,12 @@ public class WebFilesCompressor implements CompressorInterface {
      
         inputFile.close(); 
         compressedFile.close(); 
+        
+        List<String> history = new ArrayList<>();
+        history.add(Mode.COMPRESS.toString());
+        history.add(this.fileToCompressName);
+        history.add(this.outputFileName);
+        this.historyOfOperations.add(history);
         
         return true;
     }
@@ -133,6 +144,12 @@ public class WebFilesCompressor implements CompressorInterface {
         
         outputFile.close(); 
         decompressedFile.close(); 
+        
+        List<String> history = new ArrayList<>();
+        history.add(Mode.DECOMPRESS.toString());
+        history.add(this.fileToDecompressName);
+        history.add(this.outputFileName);
+        this.historyOfOperations.add(history);
         
         return true;
     }
