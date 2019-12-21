@@ -14,6 +14,7 @@ import webtextfilescompressor.webmodel.WebFilesCompressor;
  *
  * @author Piotr Matras
  * @version 1.0
+ * Servlet which realizes access to history of operations stored in WebFilesCompressor class object
  */
 public class ViewHistoryOfOperations extends HttpServlet {
 

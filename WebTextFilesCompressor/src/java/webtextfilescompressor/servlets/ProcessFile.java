@@ -13,11 +13,21 @@ import webtextfilescompressor.webmodel.*;
  *
  * @author Piotr Matras
  * @version 1.0
+ * Servlet which realizes compressing/decompressing file passed in request arguments
  */
 public class ProcessFile extends HttpServlet {
     
+    /**
+     * mode - mode of file compressor (compress/decompress)
+     */
     private String mode = "";
+    /**
+     * inputFileName - path to file which will be compressed/decompressed
+     */
     private String inputFileName = "";
+    /**
+     * outputFileName - path to File in which compressed/decompressed input file will be saved
+     */
     private String outputFileName = "";
 
     /**

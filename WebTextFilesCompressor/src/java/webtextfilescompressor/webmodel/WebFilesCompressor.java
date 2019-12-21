@@ -183,7 +183,7 @@ public class WebFilesCompressor implements CompressorInterface {
     
     /**
      * 
-     * @return - collection of type List<List<String>>, which contains history of operations 
+     * @return - collection, which contains history of operations 
      * Getter for field historyOfOperations
      */
     public List<List<String>> getHistoryOfOperations() {
