@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package webtextfilescompressor.servlets;
 
 import java.io.IOException;
@@ -11,12 +6,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import webtextfilescompressor.webmodel.*;
 
 /**
  *
- * @author Birdman
+ * @author Piotr Matras
+ * @version 1.0
  */
 public class ProcessFile extends HttpServlet {
+    
+    private String mode = "";
+    private String inputFileName = "";
+    private String outputFileName = "";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,22 +30,36 @@ public class ProcessFile extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ProcessFile</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ProcessFile at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        this.mode = request.getParameter("mode");
+        this.inputFileName = request.getParameter("inputFile");
+        this.outputFileName = request.getParameter("outputFile");
+        
+        PrintWriter out = response.getWriter();
+                
+        if(this.mode.length() == 0 || this.inputFileName.length() == 0 || this.outputFileName.length() == 0) {
+            response.sendError(response.SC_BAD_REQUEST, "Wrong parameters passed!");
+        } else {
+            if(this.mode.equals(Mode.COMPRESS.toString().toLowerCase())) {
+                WebFilesCompressor compressor = SingleInstanceOfWebModelGuard.getFilesCompressor(this.inputFileName, "", this.outputFileName);
+                
+                try {
+                     if(compressor.compressFile()) {
+                         out.println("<html>\n<body>\n<div>File <b>" + this.inputFileName + "</b> was successfuly compressed into file <b>"
+                                 + this.outputFileName + "</b>.</div>\n");
+                     }               
+                } catch(WrongFilePassedException e) {
+                       out.println("<html>\n<body>\n<div>File to compress not found: <b>"
+                              + e.getMessage() + "</b>.</div>\n");                  
+                } catch(IOException e) {
+                      out.println("<html>\n<body>\n<div>Problem occured while compressing file: <b>"
+                              + e.getMessage() + "</b>.</div>\n");    
+                }               
+            } 
+        }        
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -80,7 +95,7 @@ public class ProcessFile extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        return "WebTextFilesCompressor";
+    }
 
 }
