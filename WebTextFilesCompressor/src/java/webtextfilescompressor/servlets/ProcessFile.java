@@ -56,7 +56,24 @@ public class ProcessFile extends HttpServlet {
                       out.println("<html>\n<body>\n<div>Problem occured while compressing file: <b>"
                               + e.getMessage() + "</b>.</div>\n");    
                 }               
-            } 
+            } else if(this.mode.equals(Mode.DECOMPRESS.toString().toLowerCase())) {
+                WebFilesCompressor decompressor = SingleInstanceOfWebModelGuard.getFilesCompressor("", this.inputFileName, this.outputFileName);
+                
+                try {
+                     if(decompressor.decompressFile()) {
+                         out.println("<html>\n<body>\n<div>File <b>" + this.inputFileName + "</b> was successfuly decompressed into file <b>"
+                                 + this.outputFileName + "</b>.</div>\n");
+                     }               
+                } catch(WrongFilePassedException e) {
+                       out.println("<html>\n<body>\n<div>File to decompress not found: <b>"
+                              + e.getMessage() + "</b>.</div>\n</body>\n</html>");                  
+                } catch(IOException e) {
+                      out.println("<html>\n<body>\n<div>Problem occured while decompressing file: <b>"
+                              + e.getMessage() + "</b>.</div>\n</body>\n</html>");    
+                }                    
+            } else {
+                out.println("<html>\n<body>\n<div>Wrong working mode passed! Try again...</div>\n</body>\n</html>");
+            }
         }        
     }
     
