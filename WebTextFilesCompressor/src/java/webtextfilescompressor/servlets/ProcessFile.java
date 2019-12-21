@@ -3,6 +3,7 @@ package webtextfilescompressor.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +38,17 @@ public class ProcessFile extends HttpServlet {
         this.outputFileName = request.getParameter("outputFile");
         
         PrintWriter out = response.getWriter();
+        
+        Cookie[] cookies = request.getCookies();
+        String previousMode = "";
+        if(cookies != null) {
+            for(Cookie cookie : cookies) {
+                if(cookie.getName().equals("prevMode")) {
+                    previousMode = cookie.getValue();
+                    break;
+                }                
+            }            
+        }
                 
         if(this.mode.length() == 0 || this.inputFileName.length() == 0 || this.outputFileName.length() == 0) {
             response.sendError(response.SC_BAD_REQUEST, "Wrong parameters passed!");
@@ -74,7 +86,14 @@ public class ProcessFile extends HttpServlet {
             } else {
                 out.println("<html>\n<body>\n<div>Wrong working mode passed! Try again...</div>\n</body>\n</html>");
             }
-        }        
+        }   
+        
+        if(!previousMode.equals("")) {
+            out.println("<html><body><br><br><div> Mode of previous operation request was: <b>" + previousMode + "</b></div></body></html>");            
+        }
+        
+        Cookie cookie = new Cookie("prevMode", this.mode.toLowerCase());
+        response.addCookie(cookie);
     }
     
     /**
