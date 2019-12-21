@@ -181,4 +181,12 @@ public class WebFilesCompressor implements CompressorInterface {
         this.outputFileName = fileName;
     }
     
+    /**
+     * 
+     * @return - collection of type List<List<String>>, which contains history of operations 
+     * Getter for field historyOfOperations
+     */
+    public List<List<String>> getHistoryOfOperations() {
+        return this.historyOfOperations;
+    }    
 }
