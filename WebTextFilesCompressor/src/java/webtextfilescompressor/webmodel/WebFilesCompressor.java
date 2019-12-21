@@ -92,7 +92,7 @@ public class WebFilesCompressor implements CompressorInterface {
         compressedFile.close(); 
         
         List<String> history = new ArrayList<>();
-        history.add(Mode.COMPRESS.toString());
+        history.add(Mode.COMPRESS.toString().toLowerCase());
         history.add(this.fileToCompressName);
         history.add(this.outputFileName);
         this.historyOfOperations.add(history);
@@ -146,7 +146,7 @@ public class WebFilesCompressor implements CompressorInterface {
         decompressedFile.close(); 
         
         List<String> history = new ArrayList<>();
-        history.add(Mode.DECOMPRESS.toString());
+        history.add(Mode.DECOMPRESS.toString().toLowerCase());
         history.add(this.fileToDecompressName);
         history.add(this.outputFileName);
         this.historyOfOperations.add(history);
