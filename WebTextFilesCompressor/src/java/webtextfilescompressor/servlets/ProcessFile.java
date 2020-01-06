@@ -7,6 +7,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import webtextfilescompressor.database.DatabaseConnector;
 import webtextfilescompressor.webmodel.*;
 
 /**
@@ -60,6 +61,8 @@ public class ProcessFile extends HttpServlet {
                 }                
             }            
         }
+        
+        DatabaseConnector databaseConnector = new DatabaseConnector();
                 
         if(this.mode.length() == 0 || this.inputFileName.length() == 0 || this.outputFileName.length() == 0) {
             response.sendError(response.SC_BAD_REQUEST, "Wrong parameters passed!");
@@ -71,6 +74,8 @@ public class ProcessFile extends HttpServlet {
                      if(compressor.compressFile()) {
                          out.println("<html>\n<body>\n<div>File <b>" + this.inputFileName + "</b> was successfuly compressed into file <b>"
                                  + this.outputFileName + "</b>.</div>\n</body>\n</html>");
+                         
+                         databaseConnector.insertData(mode, inputFileName, outputFileName);
                      }               
                 } catch(WrongFilePassedException e) {
                        out.println("<html>\n<body>\n<div>File to compress not found: <b>"
@@ -86,6 +91,8 @@ public class ProcessFile extends HttpServlet {
                      if(decompressor.decompressFile()) {
                          out.println("<html>\n<body>\n<div>File <b>" + this.inputFileName + "</b> was successfuly decompressed into file <b>"
                                  + this.outputFileName + "</b>.</div>\n</body>\n</html>");
+                         
+                         databaseConnector.insertData(mode, inputFileName, outputFileName);
                      }               
                 } catch(WrongFilePassedException e) {
                        out.println("<html>\n<body>\n<div>File to decompress not found: <b>"
