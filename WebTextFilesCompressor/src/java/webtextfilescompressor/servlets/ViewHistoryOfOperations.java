@@ -12,7 +12,7 @@ import webtextfilescompressor.database.DatabaseConnector;
 /**
  *
  * @author Piotr Matras
- * @version 1.0.1
+ * @version 1.1
  * Servlet which realizes access to history of operations stored in WebFilesCompressor class object
  */
 public class ViewHistoryOfOperations extends HttpServlet {

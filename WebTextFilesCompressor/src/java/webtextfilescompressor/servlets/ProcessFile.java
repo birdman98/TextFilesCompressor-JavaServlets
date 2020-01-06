@@ -13,7 +13,7 @@ import webtextfilescompressor.webmodel.*;
 /**
  *
  * @author Piotr Matras
- * @version 1.0
+ * @version 1.1
  * Servlet which realizes compressing/decompressing file passed in request arguments
  */
 public class ProcessFile extends HttpServlet {
