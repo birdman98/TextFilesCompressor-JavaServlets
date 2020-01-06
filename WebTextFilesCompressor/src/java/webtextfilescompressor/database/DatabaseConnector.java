@@ -3,7 +3,11 @@ package webtextfilescompressor.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -64,6 +68,29 @@ public class DatabaseConnector {
         }
         
         return false;
+    }
+    
+    public List<List<String>> getOperationsHistory() {
+        List<List<String>> operationsHistory = new ArrayList<List<String>>();
+        try {
+            Statement statement = this.connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM OperationsHistory");    
+            
+            while(resultSet.next()) {
+                List<String> history = new ArrayList<>();
+                history.add(resultSet.getString("mode"));
+                history.add(resultSet.getString("inputFile"));
+                history.add(resultSet.getString("outputFile"));
+                
+                operationsHistory.add(history);
+            }
+            resultSet.close();
+            
+        } catch(SQLException e) {
+            System.err.println("Failed to get data from database, reason: " + e.getMessage());
+        }
+        
+        return operationsHistory;        
     }
     
 }

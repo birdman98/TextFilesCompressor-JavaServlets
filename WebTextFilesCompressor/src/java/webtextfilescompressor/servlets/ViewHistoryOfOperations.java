@@ -7,13 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import webtextfilescompressor.webmodel.SingleInstanceOfWebModelGuard;
-import webtextfilescompressor.webmodel.WebFilesCompressor;
+import webtextfilescompressor.database.DatabaseConnector;
 
 /**
  *
  * @author Piotr Matras
- * @version 1.0
+ * @version 1.0.1
  * Servlet which realizes access to history of operations stored in WebFilesCompressor class object
  */
 public class ViewHistoryOfOperations extends HttpServlet {
@@ -34,9 +33,8 @@ public class ViewHistoryOfOperations extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        WebFilesCompressor compressor = SingleInstanceOfWebModelGuard.getFilesCompressor("", "", "");
-        
-        List<List<String>> historyOfOperations = compressor.getHistoryOfOperations();
+        DatabaseConnector databaseConnector = new DatabaseConnector();
+        List<List<String>> historyOfOperations = databaseConnector.getOperationsHistory();
         
         out.println("<hmtl>\n<body>\n");
         
