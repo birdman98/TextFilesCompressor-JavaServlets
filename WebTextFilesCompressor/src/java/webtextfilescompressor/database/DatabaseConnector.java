@@ -57,8 +57,8 @@ public class DatabaseConnector {
     private void createTable() {
         try {
             Statement statement = connection.createStatement();   
-            statement.executeUpdate("CREATE TABLE OperationsHistory " +
-                    "(mode VARCHAR(10), inputFile VARCHAR(255), outputFile VARCHAR(255))");
+            statement.executeUpdate("CREATE TABLE " + this.tableName +
+                    " (mode VARCHAR(10), inputFile VARCHAR(255), outputFile VARCHAR(255))");
             System.out.println("Table created successfully!");
         } catch(SQLException e) {
             System.err.println("Failed to create table into database, reason: " + e.getMessage());
